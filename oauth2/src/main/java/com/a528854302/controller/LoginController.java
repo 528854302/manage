@@ -1,7 +1,9 @@
 package com.a528854302.controller;
 
+import com.a528854302.client.AdminClient;
 import com.a528854302.dto.LoginInfo;
 import com.a528854302.dto.ResponseResult;
+import com.a528854302.pojo.Admin;
 import com.a528854302.utils.MapperUtils;
 import com.a528854302.utils.OkHttpClientUtil;
 import com.sun.org.apache.regexp.internal.RE;
@@ -35,8 +37,10 @@ public class LoginController {
     BCryptPasswordEncoder passwordEncoder;
     @Resource
     TokenStore tokenStore;
+    @Autowired
+    AdminClient adminClient;
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public ResponseResult<Map<String,Object>> login(@RequestBody Map<String,String> map){
         String username = map.get("username");
         String password = map.get("password");
@@ -62,15 +66,14 @@ public class LoginController {
         }
         return new ResponseResult(ResponseResult.CodeStatus.OK,"login success",data);
     }
-    @GetMapping("/user/info")
+    @GetMapping("/info")
     public ResponseResult<LoginInfo> loginInfo(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        authentication.getName();
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setName("james");
+        loginInfo.setName(authentication.getName());
         return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK,"get userInfo",loginInfo);
     }
-    @PostMapping("/user/logout")
+    @PostMapping("/logout")
     public ResponseResult logout(HttpServletRequest request){
         String token = request.getParameter("access_token");
         OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);

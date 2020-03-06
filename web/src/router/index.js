@@ -56,6 +56,49 @@ export const constantRoutes = [
   },
 
   {
+    path: '/userservice',
+    component: Layout,
+    redirect: '/userservice/list',
+    name: 'userservice',
+    meta: { title: '用户管理', icon: 'user' },
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/userservice/index'),
+        meta: { title: '用户列表', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/userservice/add'),
+        meta: { title: '添加用户', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/productservice',
+    component: Layout,
+    redirect: '/productservice/list',
+    name: 'productservice',
+    meta: { title: '商品管理', icon: 'user' },
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/userservice/index'),
+        meta: { title: '商品列表', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/userservice/add'),
+        meta: { title: '添加商品', icon: 'tree' }
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',

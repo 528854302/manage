@@ -1,5 +1,9 @@
 package com.a528854302.service;
 
+import com.a528854302.client.AdminClient;
+import com.a528854302.mapper.AdminMapper;
+import com.a528854302.pojo.Admin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -15,19 +20,22 @@ import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private static String username="admin";
-    private static String password="$2a$10$D3TdM2TFq.I.POb2h6H8DuGj1rWdVwi9.aZ/EeOT3SKQGVyGJU7ga";
 
-
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    AdminMapper adminMapper;
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        if (s.equals(username)){
+        Example example = new Example(Admin.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("username", s);
+        Admin admin = adminMapper.selectOneByExample(example);
+        if (admin!=null){
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             GrantedAuthority grantedAuthority=new SimpleGrantedAuthority("user");
             grantedAuthorities.add(grantedAuthority);
-            return new User(username,password,grantedAuthorities);
-        }
-        else {
+            return new User(s,admin.getPassword(),grantedAuthorities);
+        }else {
             return null;
         }
     }

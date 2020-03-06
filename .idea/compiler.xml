@@ -7,9 +7,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="common" />
+        <module name="gateway" />
         <module name="oauth2" />
-        <module name="user" />
+        <module name="product_service" />
+        <module name="registry" />
+        <module name="user_service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="admin" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
