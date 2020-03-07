@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-
+import { getToken } from '@/utils/auth'
 export function login(data) {
   return request({
     url: '/oauth/login',
@@ -16,10 +16,10 @@ export function getInfo(token) {
   })
 }
 
-export function logout(token) {
+export function logout() {
   return request({
-    url: '/oauth/logout',
-    method: 'post',
-    params: { access_token: token }
+    url: '/oauth/out',
+    method: 'get',
+    params:{access_token:getToken()}
   })
 }

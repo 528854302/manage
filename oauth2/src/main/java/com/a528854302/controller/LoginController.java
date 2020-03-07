@@ -40,6 +40,11 @@ public class LoginController {
     @Autowired
     AdminClient adminClient;
 
+    /**
+     * 管理系统登录
+     * @param map
+     * @return
+     */
     @PostMapping("/login")
     public ResponseResult<Map<String,Object>> login(@RequestBody Map<String,String> map){
         String username = map.get("username");
@@ -66,6 +71,11 @@ public class LoginController {
         }
         return new ResponseResult(ResponseResult.CodeStatus.OK,"login success",data);
     }
+
+    /**
+     * 查询用户信息方法
+     * @return
+     */
     @GetMapping("/info")
     public ResponseResult<LoginInfo> loginInfo(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -73,11 +83,17 @@ public class LoginController {
         loginInfo.setName(authentication.getName());
         return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK,"get userInfo",loginInfo);
     }
-    @PostMapping("/logout")
-    public ResponseResult logout(HttpServletRequest request){
+
+    /**
+     * 注册方法，这里如果使用 @GetMapping("/logout")，会出现未授权的情况
+     * @param request
+     * @return
+     */
+    @GetMapping("/out")
+    public ResponseResult<LoginInfo> test(HttpServletRequest request){
         String token = request.getParameter("access_token");
         OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
         tokenStore.removeAccessToken(oAuth2AccessToken);
-        return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK,"logut success",null);
+        return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK,"logout",null);
     }
 }
