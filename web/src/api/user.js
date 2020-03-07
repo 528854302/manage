@@ -16,7 +16,7 @@ export function getInfo(token) {
   })
 }
 
-export function logout(token  ) {
+export function logout(token) {
   return request({
     url: '/oauth/logout',
     method: 'post',
